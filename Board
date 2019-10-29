@@ -1,0 +1,238 @@
+/*
+
+
+Given a board and an end position for the player, write a function to determine if it is possible to travel from every open cell on the board to the given end position.
+
+board1 = [
+    [ 0,  0,  0, 0, -1 ],
+    [ 0, -1, -1, 0,  0 ],
+    [ 0,  0,  0, 0,  0 ],
+    [ 0, -1,  0, 0,  0 ],
+    [ 0,  0,  0, 0,  0 ],
+    [ 0,  0,  0, 0,  0 ],
+]
+
+board2 = [
+    [  0,  0,  0, 0, -1 ],
+    [  0, -1, -1, 0,  0 ],
+    [  0,  0,  0, 0,  0 ],
+    [ -1, -1,  0, 0,  0 ],
+    [  0, -1,  0, 0,  0 ],
+    [  0, -1,  0, 0,  0 ],
+]
+
+board3 = [
+    [ 0,  0,  0,  0,  0,  0, 0 ],
+    [ 0, -1, -1, -1, -1, -1, 0 ],
+    [ 0, -1,  0,  0,  0, -1, 0 ],
+    [ 0, -1,  0,  0,  0, -1, 0 ],
+    [ 0, -1,  0,  0,  0, -1, 0 ],
+    [ 0, -1, -1, -1, -1, -1, 0 ],
+    [ 0,  0,  0,  0,  0,  0, 0 ],
+]
+
+board4 = [
+    [0,  0,  0,  0, 0],
+    [0, -1, -1, -1, 0],
+    [0, -1, -1, -1, 0],
+    [0, -1, -1, -1, 0],
+    [0,  0,  0,  0, 0],
+]
+
+end1 = (0, 0)
+end2 = (5, 0)
+
+Expected output:
+
+isReachable(board1, end1) -> True
+isReachable(board1, end2) -> True
+isReachable(board2, end1) -> False
+isReachable(board2, end2) -> False
+isReachable(board3, end1) -> False
+isReachable(board4, end1) -> True
+
+n: width of the input board
+m: height of the input board
+
+
+
+*/
+
+import java.io.*;
+import java.util.*;
+
+public class Board {
+  public static void main(String[] argv) {
+
+    
+
+    int[][] board1 = new int[][] {
+        { 0,  0,  0, 0, -1 },
+        { 0, -1, -1, 0,  0 },
+        { 0,  0,  0, 0,  0 },
+        { 0, -1,  0, 0,  0 },
+        { 0,  0,  0, 0,  0 },
+        { 0,  0,  0, 0,  0 },
+    };
+
+    int[][] board2 = new int[][] {
+        {  0,  0,  0, 0, -1 },
+        {  0, -1, -1, 0,  0 },
+        {  0,  0,  0, 0,  0 },
+        { -1, -1,  0, 0,  0 },
+        {  0, -1,  0, 0,  0 },
+        {  0, -1,  0, 0,  0 },
+    };
+
+    int[][] board3 = new int[][] {
+        { 0,  0,  0,  0,  0,  0, 0 },
+        { 0, -1, -1, -1, -1, -1, 0 },
+        { 0, -1,  0,  0,  0, -1, 0 },
+        { 0, -1,  0,  0,  0, -1, 0 },
+        { 0, -1,  0,  0,  0, -1, 0 },
+        { 0, -1, -1, -1, -1, -1, 0 },
+        { 0,  0,  0,  0,  0,  0, 0 },
+    };
+
+    int[][] board4 = new int[][] {
+        { 0,  0,  0,  0, 0 },
+        { 0, -1, -1, -1, 0 },
+        { 0, -1, -1, -1, 0 },
+        { 0, -1, -1, -1, 0 },
+        { 0,  0,  0,  0, 0 },
+    };
+
+    int[] end1 = new int[] {0, 0};
+    int[] end2 = new int[] {5, 0};
+   
+    Set<int[]> startSets = new HashSet<>();
+    startSets.add(end1);
+    startSets.add(end2);
+    
+    for(int[] start: startSets) {
+      boolean b = canReach( board1, start);
+      System.out.println(" start for " + start[0] + "," + start[1] + " canreach: " + b);
+      
+   }
+    
+    
+    for(int[] start: startSets) {
+      boolean b = canReach( board2, start);
+      System.out.println(" start for " + start[0] + "," + start[1] + " canreach: " + b);
+      
+   }
+    boolean b = canReach( board3, end1);
+    System.out.println(" start for " + end1[0] + "," + end1[1] + " canreach: " + b);
+    
+     b = canReach( board4, end1);
+    System.out.println(" start for " + end1[0] + "," + end1[1] + " canreach: " + b);
+    
+
+//     Set<int[]> startSets = new HashSet<>();
+//     startSets.add(start1);
+//     startSets.add(start2);
+//     startSets.add(start3);
+//     startSets.add(start4);
+//     startSets.add(start5);
+//     startSets.add(start6);
+//     startSets.add(start7);
+    
+    
+//     for(int[] start: startSets) {
+//       Set<int[]> set1 = movesAllowed(start, board);
+//       System.out.println(" start for " + start[0] + "," + start[1]);
+//       for(int[] a : set1) {
+//          System.out.println(a[0] + "," + a[1]);
+//       }
+//   }
+    
+  }
+  
+  public static Set<int[]> movesAllowed(int[] start, int[][] board) {
+    Set<int[]> sets = new HashSet<>();
+    int row = start[0];
+    int col = start[1];
+    
+    int boardRow= board.length;
+    int boardCol = board[0].length;
+    
+    if ( row< 0 || row > boardRow || col <0 || col >boardCol) 
+      return sets;
+    
+    if (col+ 1 < boardCol && board[row][col+1] == 0 ) {     
+      sets.add(new int[] {row, col+1}); }
+    
+    if (col-1 >=0  && board[row][col-1] == 0 ) {     
+      sets.add(new int[] {row, col-1}); }
+    
+    if (row+1 < boardRow && board[row+1][col] == 0 ) {     
+      sets.add(new int[] {row+1, col}); }
+    
+    if (row-1 >=0  && board[row-1][col] == 0 ) {     
+      sets.add(new int[] {row-1, col}); }
+    
+    return sets;
+  }
+  
+  
+
+  public static boolean canReach(int[][] board, int[] end) {
+    int row = end[0];
+    int col = end[1];
+    
+    int boardRow= board.length;
+    int boardCol = board[0].length;
+    
+    if ( row< 0 || row > boardRow || col <0 || col >boardCol) 
+      return false;
+
+    Set<int[]> connectedSets = new HashSet<>();
+    List<int[]> nextQueue = new ArrayList<>();
+
+    connectedSets  =  movesAllowed(end, board);
+    if (connectedSets.isEmpty())
+        return false;
+    for(int[] square: connectedSets )
+         nextQueue.add(square);
+
+    while(nextQueue.size() > 0) {
+        int[] nextOne = nextQueue.get(0);
+        nextQueue.remove(0);
+       // System.out.println(" nextOne: " + nextOne[0] + ",  " + nextOne[1] );
+       // System.out.println("connectedSets size: " + connectedSets.size());
+        
+           Set<int[]> nextSets = movesAllowed(nextOne, board);
+           
+           for(int[] square2: nextSets ) {
+        	   boolean alreadyIn = false;
+        	    for (int[] arr:connectedSets) {
+        		  if (Arrays.equals(square2, arr)) 
+        			  alreadyIn = true;
+        	    }
+        		 if(!alreadyIn)	 { 
+                 nextQueue.add(square2);
+                 connectedSets.add(square2 );
+
+        		 }
+           }
+        
+   }
+     System.out.println("connectedSets size: " + connectedSets.size());
+    
+    int sz2 = 0;
+    for(int crow = 0;  crow < boardRow; crow++) {
+      for(int cCol = 0;  cCol < boardCol; cCol++) {
+          if (board[crow][cCol] != -1) {
+               sz2++;
+          }
+      }
+     
+    }
+
+     if (sz2 > connectedSets.size())
+         return false;
+     else
+         return true;
+    
+  }
+}
